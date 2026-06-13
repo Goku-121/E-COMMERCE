@@ -25,7 +25,6 @@ app.use(express.json({ limit: '54mb' }));
 app.use(express.urlencoded({ limit: '54mb', extended: true }));
 app.use(cookieParser());
 
-// ✅ Fix CORS for Vercel
 app.use(cors({
   origin: process.env.FRONTEND_URL,
   credentials: true
@@ -46,5 +45,12 @@ app.use('/api/v1', apiLimiter);
 
 // Routes
 app.use('/api/v1', router);
+
+// Local development only
+if (process.env.NODE_ENV !== 'production') {
+  app.listen(5020, () => {
+    console.log("Server running on port 5020");
+  });
+}
 
 module.exports = app;
