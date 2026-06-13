@@ -46,12 +46,10 @@ app.use('/api/v1', apiLimiter);
 // Routes
 app.use('/api/v1', router);
 
-// Local development only
-if (process.env.NODE_ENV !== 'production') {
+// Server
 const PORT = process.env.PORT || 5020;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
-})
-}
+});
 
 module.exports = app;
