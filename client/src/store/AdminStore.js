@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import axios from "../utility/axios";
+import axios from "axios";
 import Cookies from "js-cookie";
 import toast from "react-hot-toast";
 

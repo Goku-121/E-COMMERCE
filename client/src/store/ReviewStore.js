@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import axios from "../utility/axios";
+import axios from "axios";
 import { unauthorized } from "../utility/utility.js";
 
 const ReviewStore = create((set) => ({

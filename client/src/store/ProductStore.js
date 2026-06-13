@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import axios from "../utility/axios";
+import axios from "axios";
 
 const ProductStore = create((set) => ({
     BrandList: null,
