@@ -150,6 +150,59 @@ const LoginWithPasswordService = async (req) => {
     }
 }
 
+const UnifiedLoginService = async (reqBody) => {
+    try {
+        const AdminModel = require('../models/AdminModel');
+        let { email, password } = reqBody;
+
+        if (!email || !password) {
+            return { status: "fail", message: "Email and password are required" };
+        }
+
+       
+        let admin = await AdminModel.findOne({ email: email.toLowerCase() });
+        if (admin) {
+            if (!admin.isVerified) {
+                return { status: "fail", message: "Admin account not verified" };
+            }
+            let isMatch = await bcrypt.compare(password, admin.password);
+            if (!isMatch) {
+                return { status: "fail", message: "Invalid email or password" };
+            }
+            let token = Encodetoken(admin.email, admin._id.toString());
+            return {
+                status: "success",
+                role: "admin",
+                token,
+                data: { _id: admin._id, name: admin.name, email: admin.email }
+            };
+        }
+
+       
+        let user = await UserModel.findOne({ email: email.toLowerCase(), is_verified: true });
+        if (!user) {
+            return { status: "fail", message: "Invalid email or password" };
+        }
+
+        let isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
+            return { status: "fail", message: "Invalid email or password" };
+        }
+
+        let token = Encodetoken(user.email, user._id.toString());
+        return {
+            status: "success",
+            role: "user",
+            token,
+            data: { _id: user._id, email: user.email }
+        };
+
+    } catch (error) {
+        console.error("UnifiedLoginService error:", error);
+        return { status: "fail", message: "Something went wrong" };
+    }
+}
+
 module.exports = {
     UserOTPService,
     VerifyOTPService,
@@ -158,5 +211,6 @@ module.exports = {
     ReadProfileService,
     RegisterOTPService,
     VerifyRegisterOTPService,
-    LoginWithPasswordService
+    LoginWithPasswordService,
+    UnifiedLoginService  
 }

@@ -47,7 +47,7 @@ router.get('/ReadProfile', AuthVerification, UserController.ReadProfile);
 router.post('/RegisterOTP', UserController.RegisterOTP);
 router.post('/VerifyRegisterOTP', UserController.VerifyRegisterOTP);
 router.post('/LoginWithPassword', UserController.LoginWithPassword);
-
+router.post('/Login', UserController.UnifiedLogin);
 // WishList
 
 router.get('/WishListServices', AuthVerification, WishListController.WishListServices);
