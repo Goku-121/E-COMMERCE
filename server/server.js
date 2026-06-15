@@ -27,7 +27,17 @@ app.use(express.json({ limit: '54mb' }));
 app.use(express.urlencoded({ limit: '54mb', extended: true }));
 app.use(cookieParser());
 app.use(cors());
-app.use(helmet());
+app.use(helmet({
+    contentSecurityPolicy: {
+        directives: {
+            defaultSrc: ["'self'"],
+            imgSrc: ["'self'", "data:", "https:", "blob:"],
+            scriptSrc: ["'self'", "'unsafe-inline'"],
+            styleSrc: ["'self'", "https:", "'unsafe-inline'"],
+            fontSrc: ["'self'", "https:", "data:"],
+        }
+    }
+}));
 app.use(mongoSanitize());
 app.use(xss());
 app.use(hpp());
